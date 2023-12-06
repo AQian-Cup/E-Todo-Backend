@@ -180,5 +180,6 @@ $RECYCLE.BIN/
 
 # Custom
 /.idea/.gitignore
+/tmp/build-errors.log
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,go,goland
