@@ -13,7 +13,7 @@ type User struct {
 	Nickname string
 }
 
-func (u *User) BeforeCreate(tx *gorm.DB) error {
+func (u *User) BeforeCreate(_ *gorm.DB) error {
 	password, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
