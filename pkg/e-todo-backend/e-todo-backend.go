@@ -2,6 +2,8 @@ package e_todo_backend
 
 import (
 	"context"
+	"e-todo-backend/pkg/db"
+	"e-todo-backend/pkg/router"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
@@ -12,7 +14,9 @@ import (
 	"time"
 )
 
-var cfgFile string
+var (
+	cfgFile string
+)
 
 func GetCommand() *cobra.Command {
 	cmd := &cobra.Command{
@@ -28,13 +32,20 @@ func GetCommand() *cobra.Command {
 }
 
 func run() error {
+	DBConfig := &db.PostgreSQLOptions{
+		Host:     "43.133.185.245",
+		User:     "e-todo-admin",
+		Password: "e-todo-admin",
+		Database: "e-todo",
+		Port:     5432,
+	}
+	if err := DBConfig.Init(); err != nil {
+		return err
+	}
 	r := gin.Default()
-	r.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "Not found"})
-	})
-	r.GET("/test", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "test"})
-	})
+	if err := router.InitRoutes(r); err != nil {
+		return err
+	}
 	srv := &http.Server{
 		Addr:    ":8080",
 		Handler: r,
