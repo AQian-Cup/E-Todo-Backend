@@ -181,5 +181,7 @@ $RECYCLE.BIN/
 # Custom
 /.idea/.gitignore
 /tmp/build-errors.log
+/.idea/dataSources.xml
+/.idea/sqldialects.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,go,goland
