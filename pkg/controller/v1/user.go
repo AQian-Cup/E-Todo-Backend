@@ -18,7 +18,7 @@ func (U *UserController) Register(c *gin.Context) {
 		return
 	}
 	b := &biz.UserBiz{}
-	if err := b.Register(c, r); err != nil {
+	if err := b.Register(r); err != nil {
 		response.Write(c, errno.InternalServerError)
 		return
 	}
