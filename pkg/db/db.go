@@ -31,7 +31,7 @@ func (o *PostgreSQLOptions) Init() error {
 	if err != nil {
 		return err
 	}
-	if err := DB.AutoMigrate(&model.User{}); err != nil {
+	if err := DB.AutoMigrate(&model.User{}, &model.Task{}); err != nil {
 		return err
 	}
 	return nil

@@ -11,6 +11,7 @@ type User struct {
 	Email    string `gorm:"unique"`
 	Password string
 	Nickname string
+	Tasks    []Task
 }
 
 func (u *User) BeforeCreate(_ *gorm.DB) error {
