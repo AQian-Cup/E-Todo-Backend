@@ -183,5 +183,6 @@ $RECYCLE.BIN/
 /tmp/build-errors.log
 /.idea/dataSources.xml
 /.idea/sqldialects.xml
+/.idea/codeStyles/codeStyleConfig.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,go,goland
