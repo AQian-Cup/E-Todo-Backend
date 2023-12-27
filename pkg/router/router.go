@@ -1,8 +1,11 @@
 package router
 
 import (
+	"crypto/ecdsa"
 	controllerV1 "e-todo-backend/pkg/controller/v1"
 	"e-todo-backend/pkg/errno"
+	"e-todo-backend/pkg/jwt"
+	"e-todo-backend/pkg/middleware"
 	"e-todo-backend/pkg/response"
 	"github.com/gin-gonic/gin"
 )
@@ -13,11 +16,18 @@ func InitRoutes(g *gin.Engine) error {
 	})
 	v1 := g.Group("/v1")
 	{
-		userController := &controllerV1.UserController{}
+		userController := &controllerV1.UserController{
+			PrivateKey: nil,
+			PublicKey:  nil,
+		}
+		userController.PrivateKey, _ = jwt.GenerateECPrivateKey()
+		userController.PublicKey = userController.PrivateKey.Public().(*ecdsa.PublicKey)
 		user := v1.Group("/user")
 		{
 			user.POST("/register", userController.Register)
+			user.POST("/login", userController.Login)
 		}
+		user.Use(middleware.AuthMiddleware(userController.PublicKey))
 	}
 	return nil
 }

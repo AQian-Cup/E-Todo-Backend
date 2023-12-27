@@ -5,10 +5,10 @@ import (
 	"net/http"
 )
 
-func Write(c *gin.Context, res InterfaceResponse) {
-	if res.error() != nil {
-		c.JSON(res.error().getHTTP(), res.error().getResult())
+func Write(c *gin.Context, res *Response) {
+	if res.HTTP != http.StatusOK {
+		c.JSON(res.HTTP, res.Result)
 		return
 	}
-	c.JSON(http.StatusOK, res.data().getResult())
+	c.JSON(http.StatusOK, res.Result)
 }

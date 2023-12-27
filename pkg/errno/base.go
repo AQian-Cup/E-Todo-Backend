@@ -3,37 +3,34 @@ package errno
 import "e-todo-backend/pkg/response"
 
 var (
-	OK = &response.StructDataResponse{
-		HTTP: 200,
-		Result: response.Result{
-			Code:    "",
-			Message: "",
-		},
+	OK = &response.Response{
+		HTTP:   200,
+		Result: response.OkResult{},
 	}
-	InternalServerError = &response.StructErrorResponse{
+	InternalServerError = &response.Response{
 		HTTP: 500,
-		Result: response.Result{
+		Result: response.ErrorResult{
 			Code:    "InternalError",
 			Message: "Internal server error",
 		},
 	}
-	PageNotFound = &response.StructErrorResponse{
+	PageNotFound = &response.Response{
 		HTTP: 404,
-		Result: response.Result{
+		Result: response.ErrorResult{
 			Code:    "ResourceNotFound.PageNotFound",
 			Message: "Page not found",
 		},
 	}
-	BindError = &response.StructErrorResponse{
+	BindError = &response.Response{
 		HTTP: 400,
-		Result: response.Result{
+		Result: response.ErrorResult{
 			Code:    "InvalidParameter.BindError",
 			Message: "Error occurred while binding the request body to the struct",
 		},
 	}
-	InvalidParameter = &response.StructErrorResponse{
+	InvalidParameter = &response.Response{
 		HTTP: 400,
-		Result: response.Result{
+		Result: response.ErrorResult{
 			Code:    "InvalidParameter",
 			Message: "Parameter verification failed.",
 		},
