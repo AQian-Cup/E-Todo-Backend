@@ -5,6 +5,7 @@ import (
 	"e-todo-backend/pkg/db"
 	"e-todo-backend/pkg/router"
 	"errors"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"log"
@@ -43,6 +44,9 @@ func run() error {
 		return err
 	}
 	r := gin.Default()
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"http://localhost:5173"}
+	r.Use(cors.New(corsConfig))
 	if err := router.InitRoutes(r); err != nil {
 		return err
 	}
