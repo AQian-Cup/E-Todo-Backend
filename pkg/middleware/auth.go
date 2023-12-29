@@ -18,7 +18,6 @@ func AuthMiddleware(key *ecdsa.PublicKey) gin.HandlerFunc {
 			return
 		}
 		c.Set("name", name)
-		println("123")
 		c.Next()
 	}
 }
