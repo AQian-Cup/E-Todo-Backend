@@ -46,6 +46,7 @@ func run() error {
 	r := gin.Default()
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowOrigins = []string{"http://localhost:5173"}
+	corsConfig.AllowHeaders = append(corsConfig.AllowHeaders, "Authorization")
 	r.Use(cors.New(corsConfig))
 	if err := router.InitRoutes(r); err != nil {
 		return err
