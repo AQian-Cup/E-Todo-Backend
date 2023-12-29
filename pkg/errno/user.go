@@ -1,17 +1,20 @@
 package errno
 
-import "e-todo-backend/pkg/response"
+import (
+	"e-todo-backend/pkg/response"
+	"net/http"
+)
 
 var (
 	UserAlreadyExist = &response.Response{
-		HTTP: 400,
+		HTTP: http.StatusBadRequest,
 		Result: response.ErrorResult{
 			Code:    "FailedOperation.UserAlreadyExist",
 			Message: "User already exist",
 		},
 	}
 	UserAuthError = &response.Response{
-		HTTP: 401,
+		HTTP: http.StatusUnauthorized,
 		Result: response.ErrorResult{
 			Code:    "FailedOperation.UserAuthError",
 			Message: "User authentication error",

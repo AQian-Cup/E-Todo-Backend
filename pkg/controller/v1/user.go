@@ -7,6 +7,7 @@ import (
 	"e-todo-backend/pkg/errno"
 	"e-todo-backend/pkg/response"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type UserController struct {
@@ -40,7 +41,7 @@ func (u *UserController) Login(c *gin.Context) {
 		return
 	} else {
 		response.Write(c, &response.Response{
-			HTTP: 200,
+			HTTP: http.StatusOK,
 			Result: response.OkResult{
 				"token": ts,
 			},
