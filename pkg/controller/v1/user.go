@@ -22,7 +22,7 @@ func (u *UserController) Register(c *gin.Context) {
 		return
 	}
 	b := &biz.UserBiz{}
-	if err := b.Register(r); err != nil {
+	if err := b.Register(&r); err != nil {
 		response.Write(c, errno.InternalServerError)
 		return
 	}
@@ -36,7 +36,7 @@ func (u *UserController) Login(c *gin.Context) {
 		return
 	}
 	b := &biz.UserBiz{}
-	if ts, err := b.Login(r, u.PrivateKey); err != nil {
+	if ts, err := b.Login(&r, u.PrivateKey); err != nil {
 		response.Write(c, errno.InternalServerError)
 		return
 	} else {

@@ -11,7 +11,7 @@ import (
 type UserBiz struct {
 }
 
-func (u *UserBiz) Register(r user.RegisterRequest) error {
+func (u *UserBiz) Register(r *user.RegisterRequest) error {
 	s := &store.UserStore{}
 	if err := s.Create(r); err != nil {
 		return err
@@ -19,7 +19,7 @@ func (u *UserBiz) Register(r user.RegisterRequest) error {
 	return nil
 }
 
-func (u *UserBiz) Login(r user.LoginRequest, key *ecdsa.PrivateKey) (string, error) {
+func (u *UserBiz) Login(r *user.LoginRequest, key *ecdsa.PrivateKey) (string, error) {
 	s := &store.UserStore{}
 	m, err := s.Read(r)
 	if err != nil {

@@ -10,13 +10,13 @@ import (
 type UserStore struct {
 }
 
-func (u *UserStore) Create(r user.RegisterRequest) error {
+func (u *UserStore) Create(r *user.RegisterRequest) error {
 	m := &model.User{}
 	_ = copier.Copy(m, r)
 	return db.DB.Create(m).Error
 }
 
-func (u *UserStore) Read(r user.LoginRequest) (*model.User, error) {
+func (u *UserStore) Read(r *user.LoginRequest) (*model.User, error) {
 	m := &model.User{}
 	if err := db.DB.Where("name = ?", r.Name).First(m).Error; err != nil {
 		return nil, err
