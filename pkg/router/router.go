@@ -27,7 +27,12 @@ func InitRoutes(g *gin.Engine) error {
 			user.POST("/register", userController.Register)
 			user.POST("/login", userController.Login)
 		}
-		user.Use(middleware.AuthMiddleware(userController.PublicKey))
+		taskController := &controllerV1.TaskController{}
+		task := v1.Group("/task")
+		task.Use(middleware.AuthMiddleware(userController.PublicKey))
+		{
+			task.POST("/create", taskController.Create)
+		}
 	}
 	return nil
 }
