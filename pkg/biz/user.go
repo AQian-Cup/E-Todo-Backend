@@ -30,7 +30,7 @@ func (u *UserBiz) Login(r *user.LoginRequest, key *ecdsa.PrivateKey) (string, er
 		return "", err
 	}
 	var ts string
-	ts, err = jwt.Sign(r.Name, key)
+	ts, err = jwt.Sign(m.ID, key)
 	if err != nil {
 		return "", err
 	}

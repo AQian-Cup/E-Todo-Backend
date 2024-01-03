@@ -11,13 +11,13 @@ import (
 func AuthMiddleware(key *ecdsa.PublicKey) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		s := c.GetHeader("Authorization")
-		name, err := jwt.Validate(s, key)
+		userId, err := jwt.Validate(s, key)
 		if err != nil {
 			response.Write(c, errno.UserAuthError)
 			c.Abort()
 			return
 		}
-		c.Set("name", name)
+		c.Set("userId", userId)
 		c.Next()
 	}
 }

@@ -13,16 +13,16 @@ func GenerateECPrivateKey() (*ecdsa.PrivateKey, error) {
 	return ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 }
 
-func Sign(name string, privateKey *ecdsa.PrivateKey) (string, error) {
+func Sign(userId uint, privateKey *ecdsa.PrivateKey) (string, error) {
 	expirationTime := time.Now().Add(72 * time.Hour)
 	token := jwt.NewWithClaims(jwt.SigningMethodES256, jwt.MapClaims{
-		"name": name,
-		"exp":  expirationTime.Unix(),
+		"userId": userId,
+		"exp":    expirationTime.Unix(),
 	})
 	return token.SignedString(privateKey)
 }
 
-func Validate(s string, publicKey *ecdsa.PublicKey) (interface{}, error) {
+func Validate(s string, publicKey *ecdsa.PublicKey) (uint, error) {
 	token, err := jwt.Parse(s, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
 			return nil, errors.New("unexpected signing method")
@@ -30,12 +30,16 @@ func Validate(s string, publicKey *ecdsa.PublicKey) (interface{}, error) {
 		return publicKey, nil
 	})
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
-		return claims["name"], nil
+		userId, ok := claims["userId"].(float64)
+		if ok {
+			return uint(userId), nil
+		}
+		return 0, errors.New("failed type conversion")
 	} else {
-		return "", errors.New("failed token validation")
+		return 0, errors.New("failed token validation")
 	}
 }
