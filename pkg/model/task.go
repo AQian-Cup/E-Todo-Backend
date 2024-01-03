@@ -1,12 +1,16 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Task struct {
 	gorm.Model
-	UserID uint
-	Date   int
-	Detail string
-	Type   string
-	Level  int
+	Title       string
+	Description string
+	UserId      uint
+	Id          uint
+	Type        string
+	Level       uint
+	Timestamp   int64
 }
