@@ -16,13 +16,13 @@ type UserController struct {
 }
 
 func (u *UserController) Register(c *gin.Context) {
-	var r user.RegisterRequest
-	if err := c.ShouldBindJSON(&r); err != nil {
+	r := &user.RegisterRequest{}
+	if err := c.ShouldBindJSON(r); err != nil {
 		response.Write(c, errno.BindError)
 		return
 	}
 	b := &biz.UserBiz{}
-	if err := b.Register(&r); err != nil {
+	if err := b.Register(r); err != nil {
 		response.Write(c, errno.InternalServerError)
 		return
 	}
@@ -30,13 +30,13 @@ func (u *UserController) Register(c *gin.Context) {
 }
 
 func (u *UserController) Login(c *gin.Context) {
-	var r user.LoginRequest
-	if err := c.ShouldBindJSON(&r); err != nil {
+	r := &user.LoginRequest{}
+	if err := c.ShouldBindJSON(r); err != nil {
 		response.Write(c, errno.BindError)
 		return
 	}
 	b := &biz.UserBiz{}
-	if ts, err := b.Login(&r, u.PrivateKey); err != nil {
+	if ts, err := b.Login(r, u.PrivateKey); err != nil {
 		response.Write(c, errno.InternalServerError)
 		return
 	} else {

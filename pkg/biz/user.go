@@ -13,10 +13,7 @@ type UserBiz struct {
 
 func (u *UserBiz) Register(r *user.RegisterRequest) error {
 	s := &store.UserStore{}
-	if err := s.Create(r); err != nil {
-		return err
-	}
-	return nil
+	return s.Create(r)
 }
 
 func (u *UserBiz) Login(r *user.LoginRequest, key *ecdsa.PrivateKey) (string, error) {
