@@ -22,8 +22,13 @@ func (t *TaskBiz) Edit(r task.CreateRequest) {
 
 }
 
-func (t *TaskBiz) Delete(r task.CreateRequest) {
-
+func (t *TaskBiz) Delete(r *task.DeleteRequest, userId uint) error {
+	s := &store.TaskStore{}
+	if r.Id != 0 {
+		return s.DeleteById(r, userId)
+	} else {
+		return s.DeleteAll(userId)
+	}
 }
 
 func (t *TaskBiz) Read(r task.CreateRequest) {

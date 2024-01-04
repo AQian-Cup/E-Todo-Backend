@@ -9,7 +9,7 @@ type CreateRequest struct {
 }
 
 type DeleteRequest struct {
-	Id uint `json:"id" binding:"required"`
+	Id uint `uri:"id"`
 }
 
 type EditRequest struct {

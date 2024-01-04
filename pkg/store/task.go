@@ -24,3 +24,18 @@ func (t *TaskStore) Read() {
 func (t *TaskStore) Update(r *task.EditRequest, userId uint) {
 
 }
+
+func (t *TaskStore) DeleteById(r *task.DeleteRequest, userId uint) error {
+	m := &model.Task{
+		Id:     r.Id,
+		UserId: userId,
+	}
+	return db.DB.Delete(m).Error
+}
+
+func (t *TaskStore) DeleteAll(userId uint) error {
+	m := &model.Task{
+		UserId: userId,
+	}
+	return db.DB.Where("user_id = ?", userId).Delete(m).Error
+}
