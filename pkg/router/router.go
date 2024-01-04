@@ -22,18 +22,19 @@ func InitRoutes(g *gin.Engine) error {
 		}
 		userController.PrivateKey, _ = jwt.GenerateECPrivateKey()
 		userController.PublicKey = userController.PrivateKey.Public().(*ecdsa.PublicKey)
-		user := v1.Group("/users")
-		{
-			user.POST("/register", userController.Register)
-			user.POST("/login", userController.Login)
-		}
+		_ = v1.Group("/users")
+		v1.POST("/register", userController.Register)
+		v1.POST("/login", userController.Login)
 		taskController := &controllerV1.TaskController{}
 		task := v1.Group("/tasks")
 		task.Use(middleware.AuthMiddleware(userController.PublicKey))
 		{
-			task.POST("/create", taskController.Create)
-			task.DELETE("/delete", taskController.Delete)
-			task.DELETE("/delete/:id", taskController.Delete)
+			task.POST("/", taskController.Create)
+			task.DELETE("/", taskController.Delete)
+			task.DELETE("/:id", taskController.Delete)
+			task.GET("/", taskController.Read)
+			task.GET("/:id", taskController.Read)
+			task.PATCH("/:id", taskController.Edit)
 		}
 	}
 	return nil

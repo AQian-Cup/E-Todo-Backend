@@ -13,7 +13,7 @@ type DeleteRequest struct {
 }
 
 type EditRequest struct {
-	Id          uint   `json:"id" binding:"required"`
+	Id          uint   `uri:"id" binding:"required"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Type        string `json:"type"`
@@ -21,5 +21,5 @@ type EditRequest struct {
 }
 
 type ReadRequest struct {
-	Id uint `json:"id" binding:"required"`
+	Id uint `uri:"id"`
 }

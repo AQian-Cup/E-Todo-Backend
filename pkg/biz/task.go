@@ -18,8 +18,13 @@ func (t *TaskBiz) Create(r *task.CreateRequest, userId uint) (*model.Task, error
 	return m, nil
 }
 
-func (t *TaskBiz) Edit(r task.CreateRequest) {
-
+func (t *TaskBiz) Edit(r *task.EditRequest, userId uint) (*model.Task, error) {
+	s := &store.TaskStore{}
+	m, err := s.Update(r, userId)
+	if err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 func (t *TaskBiz) Delete(r *task.DeleteRequest, userId uint) error {
@@ -31,6 +36,11 @@ func (t *TaskBiz) Delete(r *task.DeleteRequest, userId uint) error {
 	}
 }
 
-func (t *TaskBiz) Read(r task.CreateRequest) {
-
+func (t *TaskBiz) Read(r *task.ReadRequest, userId uint) (*model.Task, error) {
+	s := &store.TaskStore{}
+	m, err := s.Read(r, userId)
+	if err != nil {
+		return nil, err
+	}
+	return m, nil
 }
