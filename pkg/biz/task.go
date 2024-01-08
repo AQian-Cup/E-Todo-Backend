@@ -38,7 +38,7 @@ func (t *TaskBiz) Delete(r *task.DeleteRequest, userId uint) error {
 
 func (t *TaskBiz) Read(r *task.ReadRequest, userId uint) (*model.Task, error) {
 	s := &store.TaskStore{}
-	m, err := s.Read(r, userId)
+	m, err := s.ReadById(r, userId)
 	if err != nil {
 		return nil, err
 	}

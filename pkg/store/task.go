@@ -17,7 +17,7 @@ func (t *TaskStore) Create(r *task.CreateRequest, userId uint) (*model.Task, err
 	return m, db.DB.Create(m).Error
 }
 
-func (t *TaskStore) Read(r *task.ReadRequest, userId uint) (*model.Task, error) {
+func (t *TaskStore) ReadById(r *task.ReadRequest, userId uint) (*model.Task, error) {
 	m := &model.Task{
 		Id:     r.Id,
 		UserId: userId,
@@ -26,7 +26,7 @@ func (t *TaskStore) Read(r *task.ReadRequest, userId uint) (*model.Task, error) 
 }
 
 func (t *TaskStore) Update(r *task.EditRequest, userId uint) (*model.Task, error) {
-	m, err := t.Read(&task.ReadRequest{Id: r.Id}, userId)
+	m, err := t.ReadById(&task.ReadRequest{Id: r.Id}, userId)
 	if err != nil {
 		return nil, err
 	}
