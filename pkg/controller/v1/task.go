@@ -5,6 +5,7 @@ import (
 	"e-todo-backend/pkg/biz"
 	"e-todo-backend/pkg/errno"
 	"e-todo-backend/pkg/response"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -118,6 +119,42 @@ func (t *TaskController) Read(c *gin.Context) {
 				"type":        m.Type,
 				"level":       m.Level,
 			},
+		})
+		return
+	}
+}
+
+func (t *TaskController) ReadList(c *gin.Context) {
+	r := &task.ReadRequest{}
+	if err := c.ShouldBindQuery(r); err != nil {
+		response.Write(c, errno.BindError)
+		return
+	}
+	b := &biz.TaskBiz{}
+	originalUserId, _ := c.Get("userId")
+	userId, _ := originalUserId.(uint)
+	if m, err := b.ReadList(r, userId); err != nil {
+		response.Write(c, errno.InternalServerError)
+		return
+	} else {
+		okResultList := &response.OkResultList{}
+		for _, v := range *m {
+			taskJson, err := json.Marshal(v)
+			if err != nil {
+				response.Write(c, errno.InternalServerError)
+				return
+			}
+			taskMap := map[string]interface{}{}
+			err = json.Unmarshal(taskJson, &taskMap)
+			if err != nil {
+				response.Write(c, errno.InternalServerError)
+				return
+			}
+			*okResultList = append(*okResultList, taskMap)
+		}
+		response.Write(c, &response.Response{
+			HTTP:   http.StatusOK,
+			Result: okResultList,
 		})
 		return
 	}

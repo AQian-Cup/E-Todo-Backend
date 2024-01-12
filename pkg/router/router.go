@@ -32,7 +32,7 @@ func InitRoutes(g *gin.Engine) error {
 			task.POST("/", taskController.Create)
 			task.DELETE("/", taskController.Delete)
 			task.DELETE("/:id", taskController.Delete)
-			task.GET("/", taskController.Read)
+			task.GET("/", taskController.ReadList)
 			task.GET("/:id", taskController.Read)
 			task.PATCH("/:id", taskController.Edit)
 		}

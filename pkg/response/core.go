@@ -16,10 +16,16 @@ type ErrorResult struct {
 
 type OkResult map[string]interface{}
 
+type OkResultList []map[string]interface{}
+
 func (e ErrorResult) Result() {
 
 }
 
 func (o OkResult) Result() {
+
+}
+
+func (o OkResultList) Result() {
 
 }
