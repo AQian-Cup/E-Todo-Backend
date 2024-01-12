@@ -9,7 +9,7 @@ import (
 type TaskBiz struct {
 }
 
-func (t *TaskBiz) Create(r *task.CreateRequest, userId uint) (*task.CreateResponse, error) {
+func (t *TaskBiz) Create(r *task.CreateRequest, userId uint) (*map[string]interface{}, error) {
 	s := &store.TaskStore{}
 	m, err := s.Create(r, userId)
 	if err != nil {
@@ -18,7 +18,7 @@ func (t *TaskBiz) Create(r *task.CreateRequest, userId uint) (*task.CreateRespon
 	return m, nil
 }
 
-func (t *TaskBiz) Edit(r *task.EditRequest, userId uint) (*task.EditResponse, error) {
+func (t *TaskBiz) Edit(r *task.EditRequest, userId uint) (*map[string]interface{}, error) {
 	s := &store.TaskStore{}
 	m, err := s.Update(r, userId)
 	if err != nil {
@@ -36,7 +36,7 @@ func (t *TaskBiz) Delete(r *task.DeleteRequest, userId uint) error {
 	}
 }
 
-func (t *TaskBiz) Read(r *task.ReadRequest, userId uint) (*task.ReadResponse, error) {
+func (t *TaskBiz) Read(r *task.ReadRequest, userId uint) (*map[string]interface{}, error) {
 	s := &store.TaskStore{}
 	m, err := s.ReadById(r, userId)
 	if err != nil {
@@ -45,7 +45,7 @@ func (t *TaskBiz) Read(r *task.ReadRequest, userId uint) (*task.ReadResponse, er
 	return m, nil
 }
 
-func (t *TaskBiz) ReadList(r *task.ReadRequest, userId uint) (*[]task.ReadResponse, error) {
+func (t *TaskBiz) ReadList(r *task.ReadRequest, userId uint) (*[]map[string]interface{}, error) {
 	s := &store.TaskStore{}
 	if r.Year != 0 || r.Month != 0 {
 		if r.Year == 0 {
