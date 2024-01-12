@@ -10,59 +10,58 @@ import (
 type TaskStore struct {
 }
 
-func (t *TaskStore) Create(r *task.CreateRequest, userId uint) (*task.CreateResponse, error) {
+func (t *TaskStore) Create(r *task.CreateRequest, userId uint) (*map[string]interface{}, error) {
 	m := &model.Task{
 		UserId: userId,
 	}
 	_ = copier.CopyWithOption(m, r, copier.Option{IgnoreEmpty: true})
 	result := db.DB.Create(m)
 	res := &task.CreateResponse{}
-	_ = copier.Copy(res, m)
-	return res, result.Error
+	resMap := &map[string]interface{}{}
+	return resMap, result.Model(m).First(res).Error
 }
 
-func (t *TaskStore) ReadAll(userId uint) (*[]task.ReadResponse, error) {
+func (t *TaskStore) ReadAll(userId uint) (*[]map[string]interface{}, error) {
 	m := &[]model.Task{}
 	res := &[]task.ReadResponse{}
-	return res, db.DB.Model(m).Where("user_id = ?", userId).Find(res).Error
+	resMap := &[]map[string]interface{}{}
+	return resMap, db.DB.Model(m).Where("user_id = ?", userId).Find(res).Find(resMap).Error
 }
 
-func (t *TaskStore) ReadByTimestamp(timestamp int64, userId uint) (*task.ReadResponse, error) {
+func (t *TaskStore) ReadByTimestamp(timestamp int64, userId uint) (*[]map[string]interface{}, error) {
 	m := &model.Task{}
 	res := &task.ReadResponse{}
-	return res, db.DB.Model(m).Where("timestamp = ? AND user_id = ?", timestamp, userId).First(res).Error
+	resMap := &[]map[string]interface{}{}
+	return resMap, db.DB.Model(m).Where("timestamp = ? AND user_id = ?", timestamp, userId).Find(res).Find(resMap).Error
 }
 
-func (t *TaskStore) ReadByTimestampScope(startTimestamp int64, endTimestamp int64, userId uint) (*[]task.ReadResponse, error) {
+func (t *TaskStore) ReadByTimestampScope(startTimestamp int64, endTimestamp int64, userId uint) (*[]map[string]interface{}, error) {
 	m := &[]model.Task{}
 	res := &[]task.ReadResponse{}
-	return res, db.DB.Model(m).Where("timestamp >= ? AND timestamp < ? AND user_id = ?", startTimestamp, endTimestamp, userId).Find(res).Error
+	resMap := &[]map[string]interface{}{}
+	return resMap, db.DB.Model(m).Where("timestamp >= ? AND timestamp < ? AND user_id = ?", startTimestamp, endTimestamp, userId).Find(res).Find(resMap).Error
 }
 
-func (t *TaskStore) ReadById(r *task.ReadRequest, userId uint) (*task.ReadResponse, error) {
+func (t *TaskStore) ReadById(r *task.ReadRequest, userId uint) (*map[string]interface{}, error) {
 	m := &model.Task{
 		Id:     r.Id,
 		UserId: userId,
 	}
-	result := db.DB.First(m)
 	res := &task.ReadResponse{}
-	_ = copier.Copy(res, m)
-	return res, result.Error
+	resMap := &map[string]interface{}{}
+	return resMap, db.DB.Model(m).First(res).First(resMap).Error
 }
 
-func (t *TaskStore) Update(r *task.EditRequest, userId uint) (*task.EditResponse, error) {
-	m, err := t.ReadById(&task.ReadRequest{Id: r.Id}, userId)
-	if err != nil {
-		return nil, err
+func (t *TaskStore) Update(r *task.EditRequest, userId uint) (*map[string]interface{}, error) {
+	m := &model.Task{
+		UserId: userId,
 	}
-	err = copier.CopyWithOption(m, r, copier.Option{IgnoreEmpty: true, DeepCopy: true})
-	if err != nil {
-		return nil, err
-	}
-	result := db.DB.Save(m)
+	_ = copier.CopyWithOption(m, r, copier.Option{IgnoreEmpty: true, DeepCopy: true})
+	result := db.DB.Model(m).Updates(m)
 	res := &task.EditResponse{}
 	_ = copier.Copy(res, m)
-	return res, result.Error
+	resMap := &map[string]interface{}{}
+	return resMap, result.Model(res).First(resMap).Error
 }
 
 func (t *TaskStore) DeleteById(r *task.DeleteRequest, userId uint) error {
