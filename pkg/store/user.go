@@ -23,3 +23,10 @@ func (u *UserStore) Read(r *user.LoginRequest) (*model.User, error) {
 	}
 	return m, nil
 }
+
+func (u *UserStore) ReadByUserId(userId uint) (*map[string]interface{}, error) {
+	m := &model.User{}
+	res := &user.ReadResponse{}
+	resMap := &map[string]interface{}{}
+	return resMap, db.DB.Model(m).Where("ID = ?", userId).First(res).First(resMap).Error
+}

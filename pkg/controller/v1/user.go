@@ -7,6 +7,7 @@ import (
 	"e-todo-backend/pkg/errno"
 	"e-todo-backend/pkg/response"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/copier"
 	"net/http"
 )
 
@@ -47,5 +48,22 @@ func (u *UserController) Login(c *gin.Context) {
 			},
 		})
 		return
+	}
+}
+
+func (u *UserController) ReadCurrent(c *gin.Context) {
+	b := &biz.UserBiz{}
+	originalUserId, _ := c.Get("userId")
+	userId, _ := originalUserId.(uint)
+	if m, err := b.ReadCurrent(userId); err != nil {
+		response.Write(c, errno.InternalServerError)
+		return
+	} else {
+		okResult := &response.OkResult{}
+		_ = copier.Copy(okResult, m)
+		response.Write(c, &response.Response{
+			HTTP:   http.StatusOK,
+			Result: okResult,
+		})
 	}
 }

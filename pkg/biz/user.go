@@ -33,3 +33,12 @@ func (u *UserBiz) Login(r *user.LoginRequest, key *ecdsa.PrivateKey) (string, er
 	}
 	return ts, nil
 }
+
+func (u *UserBiz) ReadCurrent(userId uint) (*map[string]interface{}, error) {
+	s := &store.UserStore{}
+	m, err := s.ReadByUserId(userId)
+	if err != nil {
+		return nil, err
+	}
+	return m, err
+}
