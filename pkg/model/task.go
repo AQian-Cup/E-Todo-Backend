@@ -9,7 +9,6 @@ type Task struct {
 	Title       string
 	Description string
 	UserId      uint
-	Id          uint
 	Type        string
 	Level       uint
 	Timestamp   int64

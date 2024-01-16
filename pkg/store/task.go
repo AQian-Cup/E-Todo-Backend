@@ -5,6 +5,7 @@ import (
 	"e-todo-backend/pkg/db"
 	"e-todo-backend/pkg/model"
 	"github.com/jinzhu/copier"
+	"gorm.io/gorm"
 )
 
 type TaskStore struct {
@@ -44,7 +45,7 @@ func (t *TaskStore) ReadByTimestampScope(startTimestamp int64, endTimestamp int6
 
 func (t *TaskStore) ReadById(r *task.ReadRequest, userId uint) (*map[string]interface{}, error) {
 	m := &model.Task{
-		Id:     r.Id,
+		Model:  gorm.Model{ID: r.Id},
 		UserId: userId,
 	}
 	res := &task.ReadResponse{}
@@ -66,7 +67,7 @@ func (t *TaskStore) Update(r *task.EditRequest, userId uint) (*map[string]interf
 
 func (t *TaskStore) DeleteById(r *task.DeleteRequest, userId uint) error {
 	m := &model.Task{
-		Id:     r.Id,
+		Model:  gorm.Model{ID: r.Id},
 		UserId: userId,
 	}
 	return db.DB.Delete(m).Error
