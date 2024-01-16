@@ -26,8 +26,9 @@ func (u *UserController) Register(c *gin.Context) {
 	if err := b.Register(r); err != nil {
 		response.Write(c, errno.InternalServerError)
 		return
+	} else {
+		response.Write(c, errno.OK)
 	}
-	response.Write(c, errno.OK)
 }
 
 func (u *UserController) Login(c *gin.Context) {
