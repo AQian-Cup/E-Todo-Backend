@@ -26,15 +26,15 @@ func InitRoutes(g *gin.Engine) error {
 		v1.POST("/register", userController.Register)
 		v1.POST("/login", userController.Login)
 		taskController := &controllerV1.TaskController{}
-		task := v1.Group("/tasks")
-		task.Use(middleware.AuthMiddleware(userController.PublicKey))
+		tasks := v1.Group("/tasks")
+		tasks.Use(middleware.AuthMiddleware(userController.PublicKey))
 		{
-			task.POST("/", taskController.Create)
-			task.DELETE("/", taskController.Delete)
-			task.DELETE("/:id", taskController.Delete)
-			task.GET("/", taskController.ReadList)
-			task.GET("/:id", taskController.Read)
-			task.PATCH("/:id", taskController.Edit)
+			tasks.POST("/", taskController.Create)
+			tasks.DELETE("/", taskController.Delete)
+			tasks.DELETE("/:id", taskController.Delete)
+			tasks.GET("/", taskController.ReadList)
+			tasks.GET("/:id", taskController.Read)
+			tasks.PATCH("/:id", taskController.Edit)
 		}
 	}
 	return nil
